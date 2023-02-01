@@ -16,8 +16,9 @@ namespace RickAndMortyMs.Controllers
         [HttpGet]
         public async Task<IActionResult> Check(string nameC, string nameE)
         {
-            await mainInterface.CheckCharacterInTheEpisode(nameC, nameE);
-            return Ok();
+            if (!await mainInterface.CheckCharacterInTheEpisode(nameC, nameE))
+                return Ok((object)"No");
+            return Ok((object)"Yes");
         }
     }
 }
