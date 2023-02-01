@@ -11,20 +11,15 @@ namespace RickAndMortyMs.Services
 {
     public class CachedSearchCharacterInEpisodeService : ISearchCharacterInEpisodeService
     {
-        private readonly IRepository _repo;
         private readonly IMemoryCache _memoryCache;
         private readonly ISearchCharacterInEpisodeService _searchCharacterInEpisodeService;
-
-        private static readonly Regex _idRegex = new (@"\d+$");
         private const string CacheKey = "ResultKey";
 
         public CachedSearchCharacterInEpisodeService(
-            IRepository repo,
             IMemoryCache memoryCache,
             ISearchCharacterInEpisodeService searchCharacterInEpisodeService)
         {
             _memoryCache = memoryCache;
-            _repo = repo;
             _searchCharacterInEpisodeService = searchCharacterInEpisodeService;
         }
 
