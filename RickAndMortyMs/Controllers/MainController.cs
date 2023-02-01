@@ -1,24 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RickAndMortyMs.Services.Interfaces;
-using System.Runtime.CompilerServices;
 
 namespace RickAndMortyMs.Controllers
 {
     [ApiController]
-    [Route("api/v1")]
+    [Route("api/v1/check-person")]
     public class MainController : ControllerBase
     {
-        private readonly IMainServiceInterface mainInterface;
-        public MainController(IMainServiceInterface _mainInterface)
+        private readonly ISearchCharacterInEpisodeService mainInterface;
+        public MainController(ISearchCharacterInEpisodeService _mainInterface)
         {
             mainInterface = _mainInterface;
         }
         [HttpGet]
         public async Task<IActionResult> Check(string nameC, string nameE)
         {
-            if (!await mainInterface.CheckCharacterInTheEpisode(nameC, nameE))
-                return Ok((object)"No");
-            return Ok((object)"Yes");
+            try
+            {
+                if (!await mainInterface.CheckCharacterInTheEpisode(nameC, nameE))
+                    return Ok((object)$"Character {nameC} did not appear in episode {nameE}");
+                return Ok((object)$"Character {nameC} appeared in episode {nameE}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
         }
     }
 }
