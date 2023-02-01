@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
     .AddScoped<ISearchCharacterInEpisodeService, SearchCharacterInEpisodeService>()
-    .AddScoped<IRepository, Repository>();
+    .AddScoped<IRepository, Repository>()
+    .Decorate<ISearchCharacterInEpisodeService, CachedSearchCharacterInEpisodeService>();
 
 builder.Services.AddMemoryCache();
 

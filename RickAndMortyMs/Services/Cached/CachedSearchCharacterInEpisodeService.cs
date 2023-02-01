@@ -13,64 +13,35 @@ namespace RickAndMortyMs.Services
     {
         private readonly IRepository _repo;
         private readonly IMemoryCache _memoryCache;
+        private readonly ISearchCharacterInEpisodeService _searchCharacterInEpisodeService;
 
-        private static readonly Regex _idRegex = new Regex(@"\d+$");
+        private static readonly Regex _idRegex = new (@"\d+$");
         private const string CacheKey = "ResultKey";
 
         public CachedSearchCharacterInEpisodeService(
             IRepository repo,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            ISearchCharacterInEpisodeService searchCharacterInEpisodeService)
         {
             _memoryCache = memoryCache;
             _repo = repo;
+            _searchCharacterInEpisodeService = searchCharacterInEpisodeService;
         }
 
         public async Task<bool> CheckCharacterInTheEpisode(string characterName, string episodeName)
         {
-            var path1 = $"/character/?name={characterName}";
-            var path2 = $"/episode/?name={episodeName}";
-
-            var dto = await _repo.GetPages<CharacterCheckDto>(path1);
-            var dto1 = await _repo.GetPages<EpisodCheckDto>(path2);
-
-            var chIds = new HashSet<int>();
-            var chIds2 = new HashSet<int>();
-
-            foreach (var character in dto)
-            {
-                chIds.Add(character.id);
-            }
-
-            foreach (var episode in dto1)
-            {
-                foreach (var x in episode.characters)
-                {
-                    chIds2.Add(await GetId(x));
-                }
-            }
-
             var cacheOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromSeconds(10))
-                .SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+                .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
 
             if (_memoryCache.TryGetValue(CacheKey, out bool result))
                 return result;
-            result = chIds.Intersect(chIds2).Any();
+
+            result = await _searchCharacterInEpisodeService.CheckCharacterInTheEpisode(characterName, episodeName);
 
             _memoryCache.Set(CacheKey, result, cacheOptions);
 
             return result;
-        }
-
-        private async Task<int> GetId(string url)
-        {
-            Match match = _idRegex.Match(url);
-            if (!match.Success)
-            {
-                return 0;
-            }
-
-            return int.TryParse(match.Value, out int id) ? id : 0;
         }
     }
 }
