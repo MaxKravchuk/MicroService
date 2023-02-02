@@ -3,18 +3,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["RickAndMortyMs/RickAndMortyMs.csproj", "RickAndMortyMs/"]
-RUN dotnet restore "RickAndMortyMs/RickAndMortyMs.csproj"
+COPY ["RickAndMortyMs.csproj", "./"]
+RUN dotnet restore "./RickAndMortyMs.csproj"
 COPY . .
-WORKDIR "/src/RickAndMortyMs"
+WORKDIR "/src/."
 RUN dotnet build "RickAndMortyMs.csproj" -c Release -o /app/build
-
 FROM build AS publish
-RUN dotnet publish "RickAndMortyMs.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "RickAndMortyMs.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

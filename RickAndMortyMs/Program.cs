@@ -1,6 +1,17 @@
+using RickAndMortyMs.Mapper;
+using RickAndMortyMs.Repositories;
+using RickAndMortyMs.Repositories.Interfaces;
+using RickAndMortyMs.Services;
+using RickAndMortyMs.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddServices();
+builder.Services.AddMappers();
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,9 +28,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
