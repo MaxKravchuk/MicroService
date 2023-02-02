@@ -2,6 +2,6 @@
 {
     public class EpisodCheckDto
     {
-        public string[] characters { get; set; }
+        public IEnumerable<string>? characters { get; set; }
     }
 }

@@ -8,11 +8,11 @@
         public string? Species { get; set; }
         public string? Type { get; set; }
         public string? Gender { get; set; }
-        public Origin Origin { get; set; }
+        public Origin? Origin { get; set; }
         public Location? Location { get; set; }
-        public Uri? Image { get; set; }
-        public IEnumerable<Uri>? Episodes { get; set; }
-        public Uri? Url { get; set;}
+        public string? Image { get; set; }
+        public IEnumerable<string>? Episodes { get; set; }
+        public string? Url { get; set;}
         public string? Created { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using RickAndMortyMs.Models.Dto;
+﻿using RickAndMortyMs.Mapper.Interface;
+using RickAndMortyMs.Models.Domain;
+using RickAndMortyMs.Models.Dto;
 using RickAndMortyMs.Repositories.Interfaces;
 using RickAndMortyMs.Services.Interfaces;
 using System.Collections.Generic;
@@ -10,11 +12,18 @@ namespace RickAndMortyMs.Services
     public class SearchCharacterInEpisodeService : ISearchCharacterInEpisodeService
     {
         private readonly IRepository _repo;
-        private static readonly Regex _idRegex = new Regex(@"\d+$");
+        private readonly IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>> _mapperCharacter;
+        private readonly IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>> _mapperEpisode;
+        private static readonly Regex _idRegex = new (@"\d+$");
 
-        public SearchCharacterInEpisodeService(IRepository repo)
+        public SearchCharacterInEpisodeService(
+            IRepository repo,
+            IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>> mC,
+            IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>> mE)
         {
             _repo = repo;
+            _mapperCharacter = mC;
+            _mapperEpisode = mE;
         }
 
         public async Task<bool> CheckCharacterInTheEpisode(string characterName, string episodeName)
@@ -22,29 +31,34 @@ namespace RickAndMortyMs.Services
             var path1 = $"/character/?name={characterName}";
             var path2 = $"/episode/?name={episodeName}";
 
-            var dto = await _repo.GetPages<CharacterCheckDto>(path1);
-            var dto1 = await _repo.GetPages<EpisodCheckDto>(path2);
+            var characters = await _repo.GetPages<Character>(path1);
+            var episodes = await _repo.GetPages<Episode>(path2);
 
-            var chIds = new HashSet<int>();
-            var chIds2 = new HashSet<int>();
+            var charactedCheck = _mapperCharacter.Map(characters);
+            var episodeCheck = _mapperEpisode.Map(episodes);
 
-            foreach (var character in dto)
+            var characterIds = new HashSet<int>();
+            var episodeIds = new HashSet<int>();
+
+            foreach (var character in charactedCheck)
             {
-                chIds.Add(character.id);
+                characterIds.Add(character.id);
             }
 
-            foreach (var episode in dto1)
+            foreach (var episode in episodeCheck)
             {
-                foreach (var x in episode.characters)
+                foreach (var item in episode.characters)
                 {
-                    chIds2.Add(await GetId(x));
+                    episodeIds.Add(GetId(item));
                 }
             }
 
-            return chIds.Intersect(chIds2).Any();
+            var result = characterIds.Intersect(episodeIds).Any();
+
+            return result;
         }
 
-        private async Task<int> GetId(string url)
+        private static int GetId(string url)
         {
             Match match = _idRegex.Match(url);
             if (!match.Success)

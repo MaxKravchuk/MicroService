@@ -22,7 +22,15 @@ namespace RickAndMortyMs.Repositories
 
         public async Task<T> Get<T>(string path)
         {
-            var pathr = _baseAddress+path;
+            string pathr;
+            if (!path.Contains(_baseAddress))
+            {
+                pathr = _baseAddress + path;
+            }
+            else
+            {
+                pathr = path;
+            }
             var response = await HttpClient.GetAsync(pathr);
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(result);

@@ -6,8 +6,8 @@
         public string? Name { get; set; }
         public string? Type { get; set; }
         public string? Dimension { get; set; }
-        public IEnumerable<Uri>? Residents { get; set; }
-        public Uri? Url { get; set; }
+        public IEnumerable<string>? Residents { get; set; }
+        public string? Url { get; set; }
         public string? Created { get; set; }
 
     }
