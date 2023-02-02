@@ -1,3 +1,4 @@
+using RickAndMortyMs.Mapper;
 using RickAndMortyMs.Repositories;
 using RickAndMortyMs.Repositories.Interfaces;
 using RickAndMortyMs.Services;
@@ -9,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddScoped<ISearchCharacterInEpisodeService, SearchCharacterInEpisodeService>()
     .AddScoped<IRepository, Repository>()
-    .Decorate<ISearchCharacterInEpisodeService, CachedSearchCharacterInEpisodeService>();
+    .AddScoped<IFindCharacterService, FindCharacterService>()
+    .Decorate<ISearchCharacterInEpisodeService, CachedSearchCharacterInEpisodeService>()
+    .Decorate<IFindCharacterService, CachedFindCharacterService>();
+
+builder.Services.AddMappers();
 
 builder.Services.AddMemoryCache();
 

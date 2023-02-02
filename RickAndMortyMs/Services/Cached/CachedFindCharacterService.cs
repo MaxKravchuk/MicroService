@@ -9,33 +9,34 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RickAndMortyMs.Services
 {
-    public class CachedSearchCharacterInEpisodeService : ISearchCharacterInEpisodeService
+    public class CachedFindCharacterService : IFindCharacterService
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly ISearchCharacterInEpisodeService _searchCharacterInEpisodeService;
-        private const string CacheKey = "BoolStatmentAboutCharacterAndEpisode";
+        private readonly IFindCharacterService _findCharacterService;
+        private const string CacheKey = "FullInfoAboutCharacter";
 
-        public CachedSearchCharacterInEpisodeService(
+        public CachedFindCharacterService(
             IMemoryCache memoryCache,
-            ISearchCharacterInEpisodeService searchCharacterInEpisodeService)
+            IFindCharacterService findCharacterService)
         {
             _memoryCache = memoryCache;
-            _searchCharacterInEpisodeService = searchCharacterInEpisodeService;
+            _findCharacterService = findCharacterService;
         }
 
-        public async Task<bool> CheckCharacterInTheEpisode(string characterName, string episodeName)
+        public async Task<IEnumerable<CharacterFullInfoDto>> GetCharacterByName(string name)
         {
             var cacheOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromSeconds(3));
 
-            if (_memoryCache.TryGetValue(CacheKey, out bool result))
+            if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<CharacterFullInfoDto> result))
                 return result;
 
-            result = await _searchCharacterInEpisodeService.CheckCharacterInTheEpisode(characterName, episodeName);
+            result = await _findCharacterService.GetCharacterByName(name);
 
             _memoryCache.Set(CacheKey, result, cacheOptions);
 
             return result;
+
         }
     }
 }
