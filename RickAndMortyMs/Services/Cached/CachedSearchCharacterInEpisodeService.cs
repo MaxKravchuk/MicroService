@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using RickAndMortyMs.Models.Dto;
-using RickAndMortyMs.Repositories.Interfaces;
 using RickAndMortyMs.Services.Interfaces;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RickAndMortyMs.Services
 {

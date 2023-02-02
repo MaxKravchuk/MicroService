@@ -1,20 +1,20 @@
 ﻿using RickAndMortyMs.Mapper.Interface;
 using RickAndMortyMs.Models.Domain;
-using RickAndMortyMs.Models.Dto;
+using RickAndMortyMs.Models.ViewModel;
 
 namespace RickAndMortyMs.Mapper
 {
-    public class SearchCharacterLtLMapper : IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>>
+    public class SearchCharacterLtLMapper : IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckVM>>
     {
-        public IEnumerable<CharacterCheckDto> Map(IEnumerable<Character> source)
+        public IEnumerable<CharacterCheckVM> Map(IEnumerable<Character> source)
         {
             var characterChecksModel = source.Select(GetCharacterCheckModel).ToList();
             return characterChecksModel;
         }
 
-        private CharacterCheckDto GetCharacterCheckModel(Character character)
+        private CharacterCheckVM GetCharacterCheckModel(Character character)
         {
-            var characterCheck = new CharacterCheckDto()
+            var characterCheck = new CharacterCheckVM()
             {
                 id= character.Id,
             };

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RickAndMortyMs.Models.Dto.Pageing;
+using RickAndMortyMs.Models.ViewModel.Pageing;
 using RickAndMortyMs.Repositories.Exeptions;
 using RickAndMortyMs.Repositories.Interfaces;
 using System.Text.RegularExpressions;

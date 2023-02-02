@@ -1,6 +1,6 @@
-﻿namespace RickAndMortyMs.Models.Dto
+﻿namespace RickAndMortyMs.Models.ViewModel
 {
-    public class CharacterOriginDto
+    public class CharacterOriginVM
     {
         public string name { get; set; }
         public string type { get; set; }

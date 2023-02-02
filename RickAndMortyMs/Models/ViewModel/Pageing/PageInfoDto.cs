@@ -1,4 +1,4 @@
-﻿namespace RickAndMortyMs.Models.Dto.Pageing
+﻿namespace RickAndMortyMs.Models.ViewModel.Pageing
 {
     public class PageInfoDto
     {

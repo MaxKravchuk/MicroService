@@ -1,6 +1,6 @@
-﻿namespace RickAndMortyMs.Models.Dto
+﻿namespace RickAndMortyMs.Models.ViewModel
 {
-    public class EpisodCheckDto
+    public class EpisodCheckVM
     {
         public IEnumerable<string>? characters { get; set; }
     }
