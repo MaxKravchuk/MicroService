@@ -1,6 +1,6 @@
 ﻿using RickAndMortyMs.Mapper.Interface;
 using RickAndMortyMs.Models.Domain;
-using RickAndMortyMs.Models.Dto;
+using RickAndMortyMs.Models.ViewModel;
 
 namespace RickAndMortyMs.Mapper
 {
@@ -8,9 +8,9 @@ namespace RickAndMortyMs.Mapper
     {
         public static void AddMappers(this IServiceCollection services)
         {
-            services.AddScoped<IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>>, SearchCharacterLtLMapper>();
-            services.AddScoped<IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>>, SearchEpisodeLtLMapper>();
-            services.AddScoped<ITrippleMapper<Character, Location, CharacterFullInfoDto>, MapperToFullCharacterInfo>();
+            services.AddScoped<IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckVM>>, SearchCharacterLtLMapper>();
+            services.AddScoped<IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckVM>>, SearchEpisodeLtLMapper>();
+            services.AddScoped<ITrippleMapper<Character, Location, CharacterFullInfoVM>, MapperToFullCharacterInfo>();
         }
     }
 }

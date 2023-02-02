@@ -1,9 +1,9 @@
-﻿using RickAndMortyMs.Models.Dto;
+﻿using RickAndMortyMs.Models.ViewModel;
 
 namespace RickAndMortyMs.Services.Interfaces
 {
     public interface IFindCharacterService
     {
-        Task<IEnumerable<CharacterFullInfoDto>> GetCharacterByName(string name);
+        Task<IEnumerable<CharacterFullInfoVM>> GetCharacterByName(string name);
     }
 }

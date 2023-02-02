@@ -1,4 +1,4 @@
-﻿using RickAndMortyMs.Models.Dto;
+﻿using RickAndMortyMs.Models.ViewModel;
 
 namespace RickAndMortyMs.Services.Interfaces
 {

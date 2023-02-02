@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using RickAndMortyMs.Models.Dto;
-using RickAndMortyMs.Repositories.Interfaces;
+using RickAndMortyMs.Models.ViewModel;
 using RickAndMortyMs.Services.Interfaces;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RickAndMortyMs.Services
 {
@@ -23,12 +18,12 @@ namespace RickAndMortyMs.Services
             _findCharacterService = findCharacterService;
         }
 
-        public async Task<IEnumerable<CharacterFullInfoDto>> GetCharacterByName(string name)
+        public async Task<IEnumerable<CharacterFullInfoVM>> GetCharacterByName(string name)
         {
             var cacheOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromSeconds(3));
 
-            if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<CharacterFullInfoDto> result))
+            if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<CharacterFullInfoVM> result))
                 return result;
 
             result = await _findCharacterService.GetCharacterByName(name);

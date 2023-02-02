@@ -1,20 +1,20 @@
 ﻿using RickAndMortyMs.Mapper.Interface;
 using RickAndMortyMs.Models.Domain;
-using RickAndMortyMs.Models.Dto;
+using RickAndMortyMs.Models.ViewModel;
 
 namespace RickAndMortyMs.Mapper
 {
-    public class SearchEpisodeLtLMapper : IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>>
+    public class SearchEpisodeLtLMapper : IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckVM>>
     {
-        public IEnumerable<EpisodCheckDto> Map(IEnumerable<Episode> source)
+        public IEnumerable<EpisodCheckVM> Map(IEnumerable<Episode> source)
         {
             var episodeChecksModel = source.Select(GetEpisodeCheckModel).ToList();
             return episodeChecksModel;
         }
 
-        private EpisodCheckDto GetEpisodeCheckModel(Episode episode)
+        private EpisodCheckVM GetEpisodeCheckModel(Episode episode)
         {
-            var episodeCheck = new EpisodCheckDto()
+            var episodeCheck = new EpisodCheckVM()
             {
                 characters = episode.Characters
             };

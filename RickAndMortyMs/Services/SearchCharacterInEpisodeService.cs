@@ -1,6 +1,6 @@
 ﻿using RickAndMortyMs.Mapper.Interface;
 using RickAndMortyMs.Models.Domain;
-using RickAndMortyMs.Models.Dto;
+using RickAndMortyMs.Models.ViewModel;
 using RickAndMortyMs.Repositories.Interfaces;
 using RickAndMortyMs.Services.Interfaces;
 using System.Collections.Generic;
@@ -12,14 +12,14 @@ namespace RickAndMortyMs.Services
     public class SearchCharacterInEpisodeService : ISearchCharacterInEpisodeService
     {
         private readonly IRepository _repo;
-        private readonly IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>> _mapperCharacter;
-        private readonly IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>> _mapperEpisode;
+        private readonly IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckVM>> _mapperCharacter;
+        private readonly IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckVM>> _mapperEpisode;
         private static readonly Regex _idRegex = new (@"\d+$");
 
         public SearchCharacterInEpisodeService(
             IRepository repo,
-            IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckDto>> mC,
-            IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckDto>> mE)
+            IEnumerableMapper<IEnumerable<Character>, IEnumerable<CharacterCheckVM>> mC,
+            IEnumerableMapper<IEnumerable<Episode>, IEnumerable<EpisodCheckVM>> mE)
         {
             _repo = repo;
             _mapperCharacter = mC;
